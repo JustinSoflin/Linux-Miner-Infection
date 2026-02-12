@@ -848,6 +848,53 @@ Beaconing = the infected machine initiating an outbound connection to an attacke
 - Cyber Range environment was previously targeted by malware, specifically linked to this lab
 - as we will soon see, this VM was compromised 12 minutes after password was updated
 
+```kql
+ DeviceNetworkEvents
+| where DeviceName contains "fix-michael"
+| where TimeGenerated >= ago(15d)
+| where RemotePort == "22" 
+| project TimeGenerated, ActionType, InitiatingProcessAccountName, InitiatingProcessCommandLine, InitiatingProcessFolderPath, Protocol, RemoteIP, RemoteIPType, RemotePort
+| order by TimeGenerated asc
+```
+from: 10.1.0.0   to: 10.1.0.255
+<img width="1096" height="307" alt="image" src="https://github.com/user-attachments/assets/6efd8585-e0dc-4120-967f-cf6c4eb6779b" />
+
+
+What the malware is doing with the IP scan
+
+When it scans IPs in order (like your logs show), it’s basically probing other machines to see if it can connect. Specifically:
+
+Ports 22 (SSH) → looking for servers that accept SSH connections.
+
+2️⃣ What it’s trying after connecting
+
+Once it finds a host that responds on one of these ports:
+
+If SSH is open, the malware tries default or common passwords for user accounts.
+
+From your earlier retea script, you can see it generates a big list of passwords for each Linux user:
+
+If it successfully logs in with any of those passwords, it can:
+
+Install itself on the new host
+
+Run miners (like xmrig or cnrig)
+
+Delete competing malware
+
+Hide traces (clear logs, remove bash history)
+
+3️⃣ Why your IPs descend
+Each one gets a “ConnectionRequest” logged, whether it succeeds or fails.
+
+root root
+root rootroot
+root root123
+root root123456
+root 123456
+root 123
+...
+
 <img width="1772" height="1057" alt="image" src="https://github.com/user-attachments/assets/0b716d64-9008-4f0e-b1ab-8562b253104d" />
 
 <img width="1957" height="1055" alt="image" src="https://github.com/user-attachments/assets/4c4f3dff-2186-42ee-8672-adaf360bdfff" />
