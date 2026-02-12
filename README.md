@@ -862,6 +862,32 @@ Miner
 
 ---
 
+## Cloud Provider Disables Azure VNet
+
+**Cyber Range SOC was previously targeted by this malware**
+
+- Email recieved: **Notice of Microsoft Azure Subscription Termination** from the **Microsoft Azure Safeguard Team**
+- Case SIR21183209
+- even though malware was not deployed by us, it still originates from our environment and is therefore our responsibility
+- Microsoft temporarily disabled Cyber Range VNet 2
+- Cyber Range Engineer closed off outgoing SSH ports, which may be why subsequent SSH probing has no successful connections
+
+ <br>
+
+<img width="1772" height="1057" alt="image" src="https://github.com/user-attachments/assets/0b716d64-9008-4f0e-b1ab-8562b253104d" />
+
+ <br>
+
+<img width="812" height="547" alt="image" src="https://github.com/user-attachments/assets/a875cdce-1bfc-47e1-8232-0cce169404be" />
+
+ <br>
+
+<img width="1957" height="1055" alt="image" src="https://github.com/user-attachments/assets/4c4f3dff-2186-42ee-8672-adaf360bdfff" />
+
+<br>
+
+---
+
 ## Recommended Actions
 
 ### Immediate Recovery
@@ -893,24 +919,19 @@ Microsoft Defender for Endpoint successfully detected the malicious activity, en
 109.206.236.18
 Beaconing = the infected machine initiating an outbound connection to an attacker-controlled server.
 
+<img width="806" height="207" alt="image" src="https://github.com/user-attachments/assets/049e3c99-f6de-4ae7-8b63-d7eaa04674b7" />
 
+<img width="1245" height="802" alt="image" src="https://github.com/user-attachments/assets/40f22064-6942-4bd7-b04e-ab5facf4a3ed" />
 
-- Cyber Range environment was previously targeted by malware, specifically linked to this lab
-- as we will soon see, this VM was compromised 12 minutes after password was updated
-- 
+CURL IPs
+```kql
+DeviceNetworkEvents
+| where DeviceName contains "fix-michael"
+| where InitiatingProcessFileName contains "curl"
+| where TimeGenerated >= ago(15d)
+| project TimeGenerated, DeviceName, InitiatingProcessFileName, InitiatingProcessCommandLine, RemotePort, RemoteIPType, RemoteIP
+| sort by TimeGenerated asc
+```
 
-
-
-
-
-
-
-
-
-
-<img width="1772" height="1057" alt="image" src="https://github.com/user-attachments/assets/0b716d64-9008-4f0e-b1ab-8562b253104d" />
-
-<img width="1957" height="1055" alt="image" src="https://github.com/user-attachments/assets/4c4f3dff-2186-42ee-8672-adaf360bdfff" />
-
-<img width="1464" height="1164" alt="image" src="https://github.com/user-attachments/assets/60897eaf-133f-4cc3-b3d1-9af8ee02c94b" />
+<img width="2268" height="477" alt="image" src="https://github.com/user-attachments/assets/e9ed6153-4b81-4090-9b18-8e1fe2dc5462" />
 
