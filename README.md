@@ -1,4 +1,4 @@
-# Linux Miner Infection  
+# Full-System Linux Compromise | Cryptomining Worm Analysis  
 
 ---
 
