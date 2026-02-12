@@ -847,3 +847,10 @@ Beaconing = the infected machine initiating an outbound connection to an attacke
 
 - Cyber Range environment was previously targeted by malware, specifically linked to this lab
 - as we will soon see, this VM was compromised 12 minutes after password was updated
+
+<img width="1772" height="1057" alt="image" src="https://github.com/user-attachments/assets/0b716d64-9008-4f0e-b1ab-8562b253104d" />
+
+<img width="1957" height="1055" alt="image" src="https://github.com/user-attachments/assets/4c4f3dff-2186-42ee-8672-adaf360bdfff" />
+
+<img width="1464" height="1164" alt="image" src="https://github.com/user-attachments/assets/60897eaf-133f-4cc3-b3d1-9af8ee02c94b" />
+
