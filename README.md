@@ -55,7 +55,7 @@ On **January 30, 2026**, a student Linux virtual machine `linux-programmatic-fix
 
 Because prior containment measures were implemented following the **initial April 2025 compromise** by the same malware campaign, its activity was limited in scope. The malware attempted to evade detection by clearing logs and obfuscating files, established long-term access, and scanned only the internal network for other targets.
 
-The compromise occurred **less than 15 minutes** after the student updated credentials, and did not trigger any alerts from the Microsoft Azure Safeguard Team. No active cryptocurrency miners were observed running, although the malware's setup actions were consistent with preparing the system for mining activity.
+The compromise occurred **less than 15 minutes** after the student updated credentials, and did not trigger any alerts from the Microsoft Azure Safeguard Team. No active cryptocurrency miners were observed running, although the malware's setup actions were consistent with preparing the system for mining activity. The virtual machine in question has since been deleted, as the student's lab has concluded, and was deployed for approximately five days. Other students participating in the same lab remain potential targets, as the context of this lab aligns with this malware's initial access method.
 
 **Key Points for Leadership:**
 
@@ -1086,7 +1086,7 @@ Less than **15 minutes** after the root password change, the host was compromise
 
 The actor’s heavy use of renaming, deletion, in-memory execution, masking, and unintelligible filenames significantly complicated artifact continuity. This deliberate anti-forensic behavior made linear reconstruction difficult and highlights the operational maturity of the campaign. Microsoft Defender for Endpoint successfully detected malicious behavior early in the attack chain, enabling swift investigation and confirmation of compromise.
 
-Compared to the **April 2025 compromise**, the impact was materially reduced. Updated Network Security Group (NSG) outbound restrictions limited scanning to the internal subnet and prevented broader external propagation. This improved containment posture resulted in no escalations fro Azure Safeguard Team. However, the successful internal SSH probing of demonstrates that additional inbound and lateral movement controls may further reduce risk without disrupting lab functionality, which may be needed as **it seems the campaign continues to actively target the Cyber Range environment.**
+Compared to the **April 2025 compromise**, the impact was materially reduced. Updated Network Security Group (NSG) outbound restrictions limited scanning to the internal subnet and prevented broader external propagation. This improved containment posture resulted in no escalations from Azure Safeguard Team. However, the successful internal SSH probing, as well as expected future student labs of this nature, demonstrates that additional inbound and lateral movement controls may be needed as **it seems the campaign continues to actively target the Cyber Range environment.**
 
 <br>
 
