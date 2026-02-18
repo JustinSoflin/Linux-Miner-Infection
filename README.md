@@ -24,7 +24,6 @@
 
 
 - [Report Information](#report-information)
-- [Table of Contents](#table-of-contents)
 - [Executive Summary](#executive-summary)
 - [Incident Response Lifecycle](#incident-response-lifecycle)
 - [Preparation](#preparation)
